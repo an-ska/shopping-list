@@ -3,6 +3,7 @@ import io from 'socket.io-client'
 import Form from '../Form/Form'
 import Items from '../Items/Items'
 import Button from '../Button/Button'
+import ReactEmoji from "react-emoji"
 
 let socket
 const ShoppingList = () => {
@@ -48,9 +49,14 @@ const ShoppingList = () => {
 			setItems(items => items.filter(item => item.item !== movedItem.item))
 		})
 
-		socket.on('cleared', () => {
+		socket.on('clearedShoppingList', () => {
 			setMessage('Shopping list was cleared')
 			setItems([])
+		})
+
+		socket.on('clearedBoughtItemsList', () => {
+			setMessage('Bought items list was cleared')
+			setBoughtItems([])
 		})
 	},[])
 
@@ -64,31 +70,35 @@ const ShoppingList = () => {
 	}
 
 	const clearShoppingList = () => {
-		socket.emit('clear')
+		socket.emit('clearShoppingList')
+	}
+
+	const clearBoughtItemsList = () => {
+		socket.emit('clearBoughtItemsList')
 	}
 
 	const markAsBought = event => {
 		const boughtItem = event.target.value
-		//
+
 		const updatedItems = [...items]
 		const selectedItems = updatedItems.filter(item => item.item === boughtItem)
-		//
+
 		selectedItems.forEach(selectedItem => selectedItem.isChecked = !selectedItem.isChecked)
 		setItems(updatedItems)
-		//
+
 		setTimeout(() => { socket.emit('markAsBought', boughtItem) }, 800)
-		// socket.emit('markAsBought', boughtItem)
 	}
 
 	return (
 		<>
 			<h1>LISTA ZAKUPÓW</h1>
-			<Button clearShoppingList={clearShoppingList}/>
+			<Button clearList={clearShoppingList} text="CLEAR SHOPPING LIST"/>
+			<Button clearList={clearBoughtItemsList} text="CLEAR BOUGHT ITEMS LIST" />
 			<p>{message}</p>
 			<Items items={items} markAsBought={markAsBought} />
 			<Form item={item} setItem={setItem} addItem={addItem} />
 			{boughtItems.map((item, i) => (
-				<p key={i}>{item.item}</p>
+				<p key={i} className="boughtItem">{ReactEmoji.emojify(item.item)}</p>
 			))}
 		</>
 	)

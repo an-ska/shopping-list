@@ -1,7 +1,7 @@
 import React from 'react'
 
-const Button = ({  clearShoppingList }) => (
-	<button className="clearButton" onClick={clearShoppingList}>clear shopping list</button>
+const Button = ({  clearList, text }) => (
+	<button className="clearButton" onClick={clearList}>{text}</button>
 )
 
 export default Button

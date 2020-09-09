@@ -69,12 +69,21 @@ mongo.connect('mongodb://127.0.0.1//mongoshoppinglist', (error, client) => {
 			})
 		})
 
-		socket.on('clear', () => {
+		socket.on('clearShoppingList', () => {
 			shoppingList.drop((error, isDeleted) => {
 				if (error) throw error
 				if (isDeleted) console.log("Collection deleted")
 
-				io.emit('cleared')
+				io.emit('clearedShoppingList')
+			})
+		})
+
+		socket.on('clearBoughtItemsList', () => {
+			boughtItemsList.drop((error, isDeleted) => {
+				if (error) throw error
+				if (isDeleted) console.log("Collection deleted")
+
+				io.emit('clearedBoughtItemsList')
 			})
 		})
 
