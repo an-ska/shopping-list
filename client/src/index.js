@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import ShoppingList from "./components/ShoppingList/ShoppingList";
+import ShoppingListApp from "./components/ShoppingListApp/ShoppingListApp";
 
-ReactDOM.render(<ShoppingList />, document.querySelector('#root'))
+ReactDOM.render(<ShoppingListApp />, document.querySelector('#root'))
 
