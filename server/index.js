@@ -49,11 +49,11 @@ mongo.connect('mongodb://127.0.0.1//mongoshoppinglist', (error, client) => {
 		})
 
 		socket.on('addItem', (item, callback) => {
-			shoppingList.insertOne({item, isChecked: false}, () => {
-				io.emit('item', {item, isChecked: false} )
+			shoppingList.insertOne({item, isChecked: false, id: Math.random()}, () => {
+				io.emit('item', {item, isChecked: false, id: Math.random()} )
 			})
 
-			callback();
+			callback()
 		})
 
 		socket.on('markAsBought', item => {
@@ -84,6 +84,15 @@ mongo.connect('mongodb://127.0.0.1//mongoshoppinglist', (error, client) => {
 				if (isDeleted) console.log("Collection deleted")
 
 				io.emit('clearedBoughtItemsList')
+			})
+		})
+
+		socket.on('updateItem', (oldValue, newValue, editedItemId) => {
+			shoppingList.updateOne({item: oldValue}, {$set: {item: newValue}}, (error, isUpdated) => {
+				if (error) throw error
+				if (isUpdated) console.log("Updated")
+
+				io.emit('editedItem', newValue, editedItemId)
 			})
 		})
 

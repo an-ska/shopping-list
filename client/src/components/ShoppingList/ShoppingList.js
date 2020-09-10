@@ -11,6 +11,7 @@ const ShoppingList = () => {
 	const [item, setItem] = useState('')
 	const [items, setItems] = useState([])
 	const [boughtItems, setBoughtItems] = useState([])
+	const [editedItem, setEditedItem] = useState({})
 
 	const ENDPOINT = 'localhost:5000'
 
@@ -58,6 +59,15 @@ const ShoppingList = () => {
 			setMessage('Bought items list was cleared')
 			setBoughtItems([])
 		})
+
+		socket.on('editedItem', (newValue, editedItemId) => {
+			setItems(items => {
+				const editedItemm = items.find(item => item.id === editedItemId)
+				editedItemm.item = newValue
+
+				return [...items]
+			})
+		})
 	},[])
 
 
@@ -89,17 +99,54 @@ const ShoppingList = () => {
 		setTimeout(() => { socket.emit('markAsBought', boughtItem) }, 800)
 	}
 
+	const editItem = item => {
+		setEditedItem({...item})
+	}
+
+	const saveEdit = (editedItem, event) => {
+		const updatedItems = [...items]
+		const editedItemm = updatedItems.find(item => item.id === editedItem.id)
+
+		const oldValue = editedItemm.item
+		const newValue = event.target.value
+		const editedItemId = editedItemm.id
+
+		if (newValue) {
+			socket.emit('updateItem', oldValue, newValue, editedItemId)
+		}
+
+		setEditedItem({})
+	}
+
+	const saveOnBlur = (editedItem, event) => {
+		saveEdit(editedItem, event)
+
+	}
+
+	const saveOnKeyDown = (editedItem, event) => {
+		console.log(event.code)
+		if(event.keyCode === 13) {
+			saveEdit(editedItem, event)
+		}
+	}
+
 	return (
 		<>
 			<h1>LISTA ZAKUPÓW</h1>
 			<Button clearList={clearShoppingList} text="CLEAR SHOPPING LIST"/>
 			<Button clearList={clearBoughtItemsList} text="CLEAR BOUGHT ITEMS LIST" />
 			<p>{message}</p>
-			<Items items={items} markAsBought={markAsBought} />
+			<Items
+				items={items}
+				markAsBought={markAsBought}
+				editItem={editItem}
+				editedItem={editedItem}
+				saveOnBlur={saveOnBlur}
+				saveOnKeyDown={saveOnKeyDown} />
 			<Form item={item} setItem={setItem} addItem={addItem} />
-			{boughtItems.map((item, i) => (
+			{ boughtItems.map((item, i) => (
 				<p key={i} className="boughtItem">{ReactEmoji.emojify(item.item)}</p>
-			))}
+			)) }
 		</>
 	)
 }

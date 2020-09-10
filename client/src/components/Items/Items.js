@@ -2,12 +2,21 @@ import React from 'react'
 import '../Items/Items.scss'
 import ReactEmoji from 'react-emoji'
 
-const Items = ({ items, markAsBought }) => (
+const Items = ({ items, markAsBought, editItem, editedItem, saveOnBlur, saveOnKeyDown }) => (
 	<ul>
 		{ items.map((item, i) => (
 			<li key={i}>
 				<input type='checkbox' name={item.item} value={item.item} onChange={markAsBought} checked={item.isChecked} />
-				<span suppressContentEditableWarning contentEditable={true}>{ReactEmoji.emojify(item.item)}</span><p>{item.isChecked ? 'yes' : 'no' }</p>
+				{ editedItem.id === item.id
+					? <input
+						type='text'
+						placeholder={item.item}
+						onBlur={(event) => saveOnBlur(item, event)}
+						onKeyDown={(event) => saveOnKeyDown(item, event)}
+						autoFocus
+					/>
+					: <span onClick={() => editItem(item)}>{ReactEmoji.emojify(item.item)}</span>
+				}
 			</li>
 		)) }
 	</ul>
