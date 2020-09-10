@@ -68,6 +68,10 @@ const ShoppingList = () => {
 				return [...items]
 			})
 		})
+
+		socket.on('deletedItem', id => {
+			setItems(items => items.filter(item => item.id !== id))
+		})
 	},[])
 
 
@@ -99,9 +103,7 @@ const ShoppingList = () => {
 		setTimeout(() => { socket.emit('markAsBought', boughtItem) }, 800)
 	}
 
-	const editItem = item => {
-		setEditedItem({...item})
-	}
+	const editItem = item => { setEditedItem({...item}) }
 
 	const saveEdit = (editedItem, event) => {
 		const updatedItems = [...items]
@@ -111,24 +113,22 @@ const ShoppingList = () => {
 		const newValue = event.target.value
 		const editedItemId = editedItemm.id
 
-		if (newValue) {
-			socket.emit('updateItem', oldValue, newValue, editedItemId)
-		}
+		if (newValue) { socket.emit('updateItem', oldValue, newValue, editedItemId) }
 
 		setEditedItem({})
 	}
 
 	const saveOnBlur = (editedItem, event) => {
 		saveEdit(editedItem, event)
-
 	}
 
 	const saveOnKeyDown = (editedItem, event) => {
-		console.log(event.code)
-		if(event.keyCode === 13) {
+		if (event.keyCode === 13) {
 			saveEdit(editedItem, event)
 		}
 	}
+
+	const deleteItem = id => { socket.emit('deleteItem', id)}
 
 	return (
 		<>
@@ -142,7 +142,9 @@ const ShoppingList = () => {
 				editItem={editItem}
 				editedItem={editedItem}
 				saveOnBlur={saveOnBlur}
-				saveOnKeyDown={saveOnKeyDown} />
+				saveOnKeyDown={saveOnKeyDown}
+				deleteItem={deleteItem}
+			/>
 			<Form item={item} setItem={setItem} addItem={addItem} />
 			{ boughtItems.map((item, i) => (
 				<p key={i} className="boughtItem">{ReactEmoji.emojify(item.item)}</p>

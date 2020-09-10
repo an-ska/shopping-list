@@ -2,7 +2,7 @@ import React from 'react'
 import '../Items/Items.scss'
 import ReactEmoji from 'react-emoji'
 
-const Items = ({ items, markAsBought, editItem, editedItem, saveOnBlur, saveOnKeyDown }) => (
+const Items = ({ items, markAsBought, editItem, editedItem, saveOnBlur, saveOnKeyDown, deleteItem }) => (
 	<ul>
 		{ items.map((item, i) => (
 			<li key={i}>
@@ -15,7 +15,11 @@ const Items = ({ items, markAsBought, editItem, editedItem, saveOnBlur, saveOnKe
 						onKeyDown={(event) => saveOnKeyDown(item, event)}
 						autoFocus
 					/>
-					: <span onClick={() => editItem(item)}>{ReactEmoji.emojify(item.item)}</span>
+					:
+					<>
+						<span onClick={() => editItem(item)}>{ReactEmoji.emojify(item.item)}</span>
+						<span onClick={() => deleteItem(item.id)}>x</span>
+					</>
 				}
 			</li>
 		)) }

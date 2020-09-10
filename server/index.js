@@ -96,6 +96,15 @@ mongo.connect('mongodb://127.0.0.1//mongoshoppinglist', (error, client) => {
 			})
 		})
 
+		socket.on('deleteItem', id => {
+			shoppingList.dropIndex(id,(error, isDeleted) => {
+				if (error) throw error
+				if (isDeleted) console.log("Item deleted")
+
+				io.emit('deletedItem', id)
+			})
+		})
+
 		socket.on('disconnect', () => {
 			if (usersNo === 0) return
 
