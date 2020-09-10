@@ -2,28 +2,34 @@ import React from 'react'
 import './ShoppingList.scss'
 import ReactEmoji from 'react-emoji'
 
-const ShoppingList = ({ items, markAsBought, editItem, editedItem, saveOnBlur, saveOnKeyDown, deleteItem }) => (
+const ShoppingList = ({ products, markProductAsBought, editProduct, editedProduct, saveOnBlur, saveOnKeyDown, deleteProduct }) => (
 	<ul>
-		{ items.map((item, i) => (
+		{ products.map((product, i) => (
 			<li key={i}>
-				<input type='checkbox' name={item.item} value={item.item} onChange={markAsBought} checked={item.isChecked} />
-				{ editedItem.id === item.id
-					? <input
-						type='text'
-						placeholder={item.item}
-						onBlur={(event) => saveOnBlur(item, event)}
-						onKeyDown={(event) => saveOnKeyDown(item, event)}
-						autoFocus
-					/>
+				<input
+					type='checkbox'
+					value={product.name}
+					onChange={markProductAsBought}
+					checked={product.isChecked}
+				/>
+				{ editedProduct.id === product.id
+					?
+						<input
+							type='text'
+							placeholder={product.name}
+							onBlur={(event) => saveOnBlur(product.id, event)}
+							onKeyDown={(event) => saveOnKeyDown(product.id, event)}
+							autoFocus
+						/>
 					:
-					<>
-						<span onClick={() => editItem(item)}>{ReactEmoji.emojify(item.item)}</span>
-						<span onClick={() => deleteItem(item.id)}>x</span>
-					</>
+						<>
+							<span onClick={() => editProduct(product)}>{ReactEmoji.emojify(product.name)}</span>
+							<span onClick={() => deleteProduct(product.id)}>x</span>
+						</>
 				}
 			</li>
 		)) }
 	</ul>
 )
 
-export default ShoppingList;
+export default ShoppingList

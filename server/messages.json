@@ -1,0 +1,11 @@
+{
+  "dbConnected": "MongoDB connected!",
+  "welcome": "Hey, welcome!",
+  "newJoiner": "We have a new joiner!",
+  "serverIsRunning": "Server is up and running!",
+  "productDeleted": "Product was deleted!",
+  "shoppingListDeleted": "Shopping list was deleted!",
+  "boughtProductsListDeleted": "Bought products list was deleted!",
+  "productUpdated": "Product was updated!",
+  "userLeft": "User has left!"
+}

@@ -6,23 +6,24 @@ const http = require('http')
 const router = require('./router')
 const server = http.createServer(app)
 const io = socketio(server, {pingTimeout: 6000000, pingInterval: 30000 })
+const messages = require('./messages.json')
 
 const PORT = process.env.PORT || 5000
 
-app.use(router);
+app.use(router)
 
 mongo.connect('mongodb://127.0.0.1//mongoshoppinglist', (error, client) => {
 	if (error) throw error
 
-	console.log("Mongodb connected!")
+	console.log(messages.dbConnected)
 
-	let usersNo = 0;
-	const getMessage = usersNo => (usersNo > 1 ? `${usersNo} people are connected!` : `${usersNo} person connected.`)
+	let usersNumber = 0;
+	const getMessage = usersNumber => (usersNumber > 1 ? `${usersNumber} people are connected!` : `${usersNumber} person connected.`)
 
 	io.on('connect', (socket) => {
 		let db = client.db('shoppingListApp')
 		let shoppingList = db.collection('shoppingList')
-		let boughtItemsList = db.collection('boughtItemsList')
+		let boughtProductsList = db.collection('boughtProductsList')
 
 		shoppingList
 			.find()
@@ -32,86 +33,89 @@ mongo.connect('mongodb://127.0.0.1//mongoshoppinglist', (error, client) => {
 				socket.emit('shoppingList', response)
 			})
 
-		boughtItemsList
+		boughtProductsList
 			.find()
 			.sort({_id: 1})
 			.toArray((error, response) => {
 				if (error) throw error
-				socket.emit('boughtItemsList', response)
+				socket.emit('boughtProductsList', response)
 			})
 
 		socket.on('join', () => {
-			usersNo++
-			console.log('We have a new joiner!')
+			usersNumber++
+			console.log(messages.newJoiner)
 
-			socket.emit('message',{ text: 'Hey, welcome!'});
-			socket.broadcast.emit('message',{ text: getMessage(usersNo) })
+			socket.emit('message',{ text: messages.welcome});
+			socket.broadcast.emit('message',{ text: getMessage(usersNumber) })
 		})
 
-		socket.on('addItem', (item, callback) => {
-			shoppingList.insertOne({item, isChecked: false, id: Math.random()}, () => {
-				io.emit('item', {item, isChecked: false, id: Math.random()} )
+		socket.on('addProduct', (name, callback) => {
+			shoppingList.insertOne({name, isChecked: false, id: Math.random()}, () => {
+				io.emit('addedProduct', {name, isChecked: false, id: Math.random()} )
 			})
 
 			callback()
 		})
 
-		socket.on('markAsBought', item => {
-			shoppingList.deleteMany({item}, (error, isDeleted) => {
+		socket.on('markProductAsBought', name => {
+			shoppingList.deleteMany({name}, (error, isProductDeleted) => {
 				if (error) throw error
-				if (isDeleted) console.log("Item deleted")
+				if (isProductDeleted) console.log(messages.productDeleted)
 
-				io.emit('movedItem', {item})
+				io.emit('movedProduct', name)
 			})
 
-			boughtItemsList.insertOne({item}, () => {
-				io.emit('boughtItem', {item} )
+			boughtProductsList.insertOne({name}, () => {
+				io.emit('addedBoughtProduct', {name} )
 			})
 		})
 
 		socket.on('clearShoppingList', () => {
-			shoppingList.drop((error, isDeleted) => {
+			shoppingList.drop((error, isListDeleted) => {
 				if (error) throw error
-				if (isDeleted) console.log("Collection deleted")
+				if (isListDeleted) console.log(messages.shoppingListDeleted)
 
 				io.emit('clearedShoppingList')
 			})
 		})
 
-		socket.on('clearBoughtItemsList', () => {
-			boughtItemsList.drop((error, isDeleted) => {
+		socket.on('clearBoughtProductsList', () => {
+			boughtProductsList.drop((error, isListDeleted) => {
 				if (error) throw error
-				if (isDeleted) console.log("Collection deleted")
+				if (isListDeleted) console.log(messages.boughtProductsListDeleted)
 
-				io.emit('clearedBoughtItemsList')
+				io.emit('clearedBoughtProductsList')
 			})
 		})
 
-		socket.on('updateItem', (oldValue, newValue, editedItemId) => {
-			shoppingList.updateOne({item: oldValue}, {$set: {item: newValue}}, (error, isUpdated) => {
-				if (error) throw error
-				if (isUpdated) console.log("Updated")
+		socket.on('updateProduct', (oldName, newName, id) => {
+			shoppingList.updateOne(
+				{name: oldName},
+				{$set: {name: newName}},
+				(error, isProductUpdated) => {
+					if (error) throw error
+					if (isProductUpdated) console.log(messages.productUpdated)
 
-				io.emit('editedItem', newValue, editedItemId)
+					io.emit('editedProduct', newName, id)
 			})
 		})
 
-		socket.on('deleteItem', id => {
-			shoppingList.deleteOne({id},(error, isDeleted) => {
+		socket.on('deleteProduct', id => {
+			shoppingList.deleteOne({id},(error, isProductDeleted) => {
 				if (error) throw error
-				if (isDeleted) console.log("Item deleted")
+				if (isProductDeleted) console.log(messages.productDeleted)
 
-				io.emit('deletedItem', id)
+				io.emit('deletedProduct', id)
 			})
 		})
 
 		socket.on('disconnect', () => {
-			if (usersNo === 0) return
+			if (usersNumber === 0) return
 
-			usersNo--
-			console.log('User has left!')
+			usersNumber--
+			console.log(messages.userLeft)
 
-			socket.broadcast.emit('message',{ text: getMessage(usersNo) })
+			socket.broadcast.emit('message',{ text: getMessage(usersNumber) })
 		})
 	})
 })

@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import io from 'socket.io-client'
-import BoughtItemsList from '../ BoughtItemsList/BoughtItemsList'
+import BoughtProductsList from '../BoughtProductsList/BoughtProductsList'
 import Form from '../Form/Form'
 import ShoppingList from '../ShoppingList/ShoppingList'
 import Button from '../Button/Button'
 import Message from '../Message/Message'
+import messages from '../../messages.json'
 
 let socket
 const ShoppingListApp = () => {
 	const [message, setMessage] = useState()
-	const [item, setItem] = useState('')
-	const [items, setItems] = useState([])
-	const [boughtItems, setBoughtItems] = useState([])
-	const [editedItem, setEditedItem] = useState({})
+	const [product, setProduct] = useState('')
+	const [products, setProducts] = useState([])
+	const [boughtProducts, setBoughtProducts] = useState([])
+	const [editedProduct, setEditedProduct] = useState({})
 
 	const ENDPOINT = 'localhost:5000'
 
@@ -30,124 +31,102 @@ const ShoppingListApp = () => {
 	useEffect(() => {
 		socket.on('message', message => { setMessage(message.text) })
 
-		socket.on('shoppingList', items => {
-			setItems(items)
-		})
+		socket.on('shoppingList', products => { setProducts(products) })
 
-		socket.on('boughtItemsList', items => {
-			setBoughtItems(items)
-		})
+		socket.on('boughtProductsList', products => { setBoughtProducts(products) })
 
-		socket.on('item', item => {
-			setItems(items => [...items, item])
-		})
+		socket.on('addedProduct', product => { setProducts(products => [...products, product]) })
 
-		socket.on('boughtItem', item => {
-			setBoughtItems(items => [...items, item])
-		})
+		socket.on('addedBoughtProduct', product => { setBoughtProducts(products => [...products, product]) })
 
-		socket.on('movedItem', movedItem => {
-			setMessage('Item is bought')
-			setItems(items => items.filter(item => item.item !== movedItem.item))
+		socket.on('movedProduct', productName => {
+			setMessage(messages.isBought)
+			setProducts(products => products.filter(product => product.name !== productName))
 		})
 
 		socket.on('clearedShoppingList', () => {
-			setMessage('Shopping list was cleared')
-			setItems([])
+			setMessage(messages.shoppingListCleared)
+			setProducts([])
 		})
 
-		socket.on('clearedBoughtItemsList', () => {
-			setMessage('Bought items list was cleared')
-			setBoughtItems([])
+		socket.on('clearedBoughtProductsList', () => {
+			setMessage(messages.boughtProductsListCleared)
+			setBoughtProducts([])
 		})
 
-		socket.on('editedItem', (newValue, editedItemId) => {
-			setItems(items => {
-				const editedItemm = items.find(item => item.id === editedItemId)
-				editedItemm.item = newValue
+		socket.on('editedProduct', (newName, id) => {
+			setProducts(products => {
+				const editedProduct = products.find(product => product.id === id)
+				editedProduct.name = newName
 
-				return [...items]
+				return [...products]
 			})
 		})
 
-		socket.on('deletedItem', id => {
-			setItems(items => items.filter(item => item.id !== id))
-		})
+		socket.on('deletedProduct', id => { setProducts(products => products.filter(product => product.id !== id)) })
 	},[])
 
 
-	const addItem = event => {
+	const addProduct= event => {
 		event.preventDefault()
 
-		if (item) {
-			socket.emit('addItem', item, () => setItem(''))
-		}
+		if (product) { socket.emit('addProduct', product, () => setProduct('')) }
 	}
 
-	const clearShoppingList = () => {
-		socket.emit('clearShoppingList')
+	const clearShoppingList = () => { socket.emit('clearShoppingList') }
+
+	const clearBoughtProductsList = () => { socket.emit('clearBoughtProductsList') }
+
+	const markProductAsBought = event => {
+		const boughtProductName = event.target.value
+
+		const updatedProducts = [...products]
+		const selectedProducts = updatedProducts.filter(product => product.name === boughtProductName)
+
+		selectedProducts.forEach(selectedProduct => selectedProduct.isChecked = !selectedProduct.isChecked)
+		setProducts(updatedProducts)
+
+		setTimeout(() => { socket.emit('markProductAsBought', boughtProductName) }, 800)
 	}
 
-	const clearBoughtItemsList = () => {
-		socket.emit('clearBoughtItemsList')
+	const editProduct = product => { setEditedProduct({...product}) }
+
+	const saveEditedProduct = (id, event) => {
+		const editedProduct = [...products].find(product => product.id === id)
+
+		const oldName = editedProduct.name
+		const newName = event.target.value
+
+		if (newName) { socket.emit('updateProduct', oldName, newName, id) }
+
+		setEditedProduct({})
 	}
 
-	const markAsBought = event => {
-		const boughtItem = event.target.value
+	const saveOnBlur = (editedProductId, event) => { saveEditedProduct(editedProductId, event) }
 
-		const updatedItems = [...items]
-		const selectedItems = updatedItems.filter(item => item.item === boughtItem)
-
-		selectedItems.forEach(selectedItem => selectedItem.isChecked = !selectedItem.isChecked)
-		setItems(updatedItems)
-
-		setTimeout(() => { socket.emit('markAsBought', boughtItem) }, 800)
+	const saveOnKeyDown = (editedProductId, event) => {
+		if (event.key === 'Enter') { saveEditedProduct(editedProductId, event) }
 	}
 
-	const editItem = item => { setEditedItem({...item}) }
-
-	const saveEdit = (editedItem, event) => {
-		const updatedItems = [...items]
-		const editedItemm = updatedItems.find(item => item.id === editedItem.id)
-
-		const oldValue = editedItemm.item
-		const newValue = event.target.value
-		const editedItemId = editedItemm.id
-
-		if (newValue) { socket.emit('updateItem', oldValue, newValue, editedItemId) }
-
-		setEditedItem({})
-	}
-
-	const saveOnBlur = (editedItem, event) => {
-		saveEdit(editedItem, event)
-	}
-
-	const saveOnKeyDown = (editedItem, event) => {
-		if (event.keyCode === 13) {
-			saveEdit(editedItem, event)
-		}
-	}
-
-	const deleteItem = id => { socket.emit('deleteItem', id)}
+	const deleteProduct = id => { socket.emit('deleteProduct', id)}
 
 	return (
 		<>
-			<h1>LISTA ZAKUPÓW</h1>
-			<Button clearList={clearShoppingList} text="CLEAR SHOPPING LIST" />
-			<Button clearList={clearBoughtItemsList} text="CLEAR BOUGHT ITEMS LIST" />
+			<h1>SHOPPING LIST</h1>
+			<Button clearList={clearShoppingList} text={messages.clearShoppingList} />
+			<Button clearList={clearBoughtProductsList} text={messages.clearBoughtProductsList} />
 			<Message message={message} />
 			<ShoppingList
-				items={items}
-				markAsBought={markAsBought}
-				editItem={editItem}
-				editedItem={editedItem}
+				products={products}
+				markProductAsBought={markProductAsBought}
+				editProduct={editProduct}
+				editedProduct={editedProduct}
 				saveOnBlur={saveOnBlur}
 				saveOnKeyDown={saveOnKeyDown}
-				deleteItem={deleteItem}
+				deleteProduct={deleteProduct}
 			/>
-			<Form item={item} setItem={setItem} addItem={addItem} />
-			<BoughtItemsList boughtItems={boughtItems} />
+			<Form product={product} setProduct={setProduct} addProduct={addProduct} />
+			<BoughtProductsList boughtProducts={boughtProducts} />
 		</>
 	)
 }
