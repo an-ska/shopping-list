@@ -7,10 +7,13 @@ const router = require('./router')
 const server = http.createServer(app)
 const io = socketio(server, {pingTimeout: 6000000, pingInterval: 30000 })
 const messages = require('./messages.json')
+const cors = require('cors')
 
 const PORT = process.env.PORT || 5000
 
 app.use(router)
+app.use(cors())
+
 
 mongo.connect('mongodb://127.0.0.1//mongoshoppinglist', (error, client) => {
 	if (error) throw error
