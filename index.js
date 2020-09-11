@@ -13,6 +13,7 @@ const PORT = process.env.PORT || 5000
 
 app.use(router)
 app.use(cors())
+app.set("port", PORT)
 
 
 mongo.connect('mongodb://127.0.0.1//mongoshoppinglist', (error, client) => {
