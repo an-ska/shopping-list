@@ -10,8 +10,7 @@ const messages = require('./messages.json')
 const cors = require('cors')
 
 const PORT = process.env.PORT || 5000
-// const mongoDB = process.env.MONGODB_URI || 'mongodb://127.0.0.1//mongoshoppinglist'
-const mongoDB = process.env.MONGODB_URI || 'mongodb+srv://dbUser:Defconf90!@cluster0.pi7gn.mongodb.net/dbUser?retryWrites=true&w=majority'
+const mongoDB = process.env.MONGODB_URI || 'mongodb://127.0.0.1//mongoshoppinglist'
 
 
 app.use(router)
