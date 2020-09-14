@@ -14,7 +14,6 @@ const mongoDB = process.env.MONGODB_URI || 'mongodb://127.0.0.1//mongoshoppingli
 
 app.use(router)
 app.use(cors())
-app.set("port", PORT)
 
 
 mongo.connect(mongoDB, (error, client) => {
