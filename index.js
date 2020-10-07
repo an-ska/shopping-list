@@ -5,12 +5,16 @@ const socketio = require('socket.io')
 const http = require('http')
 const router = require('./router')
 const server = http.createServer(app)
-const io = socketio(server, {pingTimeout: 6000000, pingInterval: 30000 })
+const io = socketio(server, { pingTimeout: 6000000, pingInterval: 30000 })
 const messages = require('./messages.json')
 const cors = require('cors')
+const dotenv = require("dotenv")
+const { testDB } = require("./constants")
 
-const PORT = process.env.PORT || 5000
-const mongoDB = process.env.MONGODB_URI || 'mongodb://127.0.0.1//mongoshoppinglist'
+dotenv.config()
+
+const PORT = 5000
+const mongoDB = process.env.MONGODB_URI
 
 app.use(router)
 app.use(cors())
@@ -24,7 +28,7 @@ mongo.connect(mongoDB, (error, client) => {
 	const getMessage = usersNumber => (usersNumber > 1 ? `${usersNumber} people are connected!` : `${usersNumber} person connected.`)
 
 	io.on('connect', (socket) => {
-		let db = client.db('shoppingListApp')
+		let db = client.db('shoppingListAppDB')
 		let shoppingList = db.collection('shoppingList')
 		let boughtProductsList = db.collection('boughtProductsList')
 

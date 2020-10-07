@@ -1,0 +1,33 @@
+[
+  {
+    "_id":"5f5a7849e57f925f68634c2e",
+    "name":"bread"
+  },
+  {
+    "_id":"5f5a7970e57f925f68634c31",
+    "name":"chocolate"
+  },
+  {
+    "_id":"5f5a7a2fe57f925f68634c32",
+    "name":"apples"
+  },
+  {"_id":"5f5a7ad1e57f925f68634c34",
+    "name":"tomatoes"
+  },
+  {
+    "_id":"5f5a7bb1e57f925f68634c36",
+    "name":"toothpaste"
+  },
+  {
+    "_id":"5f5a7bcd0700215ff9b76319",
+    "name":"potatoes"
+  },
+  {
+    "_id":"5f5a7ec2ecc555605b442021",
+    "name":"shampoo"
+  },
+  {
+    "_id":"5f5a7ecaecc555605b442024",
+    "name":"soap"
+  }
+]
