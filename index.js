@@ -13,7 +13,7 @@ const { testDB } = require("./constants")
 
 dotenv.config()
 
-const PORT = 5000
+const PORT = process.env.PORT || 5000
 const mongoDB = process.env.MONGODB_URI
 
 app.use(router)
