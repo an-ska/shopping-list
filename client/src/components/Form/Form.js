@@ -9,8 +9,10 @@ const Form = ({ setProduct, addProduct, product }) => (
 			value={product}
 			onChange={({ target: { value } }) => setProduct(value)}
 			onKeyDown={event => event.key === 'Enter' && addProduct(event)}
+			autoFocus
+			data-cy="add-product-input"
 		/>
-		<button className="sendButton" onClick={event => addProduct(event)}>Add</button>
+		<button className="addButton" onClick={event => addProduct(event)} data-cy="add-button">Add</button>
 	</form>
 )
 

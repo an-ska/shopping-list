@@ -3,7 +3,7 @@ import './ShoppingList.scss'
 import ReactEmoji from 'react-emoji'
 
 const ShoppingList = ({ products, markProductAsBought, editProduct, editedProduct, saveOnBlur, saveOnKeyDown, deleteProduct }) => (
-	<ul>
+	<ul data-cy="shopping-list">
 		{ products.map((product, i) => (
 			<li key={i}>
 				<input

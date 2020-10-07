@@ -15,7 +15,7 @@ const ShoppingListApp = () => {
 	const [boughtProducts, setBoughtProducts] = useState([])
 	const [editedProduct, setEditedProduct] = useState({})
 
-	const ENDPOINT = 'localhost:5000'
+	const ENDPOINT = 'https://real-time-shopping-list.herokuapp.com/'
 
 	useEffect(() => {
 		socket = io(ENDPOINT)
@@ -67,7 +67,7 @@ const ShoppingListApp = () => {
 	},[])
 
 
-	const addProduct= event => {
+	const addProduct = event => {
 		event.preventDefault()
 
 		if (product) { socket.emit('addProduct', product, () => setProduct('')) }
@@ -113,7 +113,7 @@ const ShoppingListApp = () => {
 	return (
 		<>
 			<h1>SHOPPING LIST</h1>
-			<Button clearList={clearShoppingList} text={messages.clearShoppingList} />
+			{ products.length > 0 && <Button clearList={clearShoppingList} text={messages.clearShoppingList} /> }
 			<Button clearList={clearBoughtProductsList} text={messages.clearBoughtProductsList} />
 			<Message message={message} />
 			<ShoppingList

@@ -7,5 +7,7 @@
   "shoppingListDeleted": "Shopping list was deleted!",
   "boughtProductsListDeleted": "Bought products list was deleted!",
   "productUpdated": "Product was updated!",
-  "userLeft": "User has left!"
+  "userLeft": "User has left!",
+  "errorFetch": "Error while fetching data from collection!",
+  "dataAddSuccess": "Data successfully added!"
 }
