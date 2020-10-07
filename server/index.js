@@ -11,10 +11,11 @@ const cors = require('cors')
 const dotenv = require("dotenv")
 const { testDB } = require("./constants")
 
-dotenv.config()
+// use to run the server with PORT and mongoDB set in env file
+// dotenv.config()
 
 const PORT = process.env.PORT || 5000
-const mongoDB = process.env.MONGODB_URI
+const mongoDB = process.env.MONGODB_URI || testDB
 
 app.use(router)
 app.use(cors())
