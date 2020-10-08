@@ -26,7 +26,7 @@ mongo.connect(mongoDB, (error, client) => {
 	console.log(messages.dbConnected)
 
 	let usersNumber = 0;
-	const getMessage = usersNumber => (usersNumber > 1 ? `${usersNumber} people are connected!` : `${usersNumber} person connected.`)
+	const getMessage = usersNumber => (usersNumber > 1 ? `${usersNumber} people are connected!` : `${usersNumber} person connected!`)
 
 	io.on('connect', (socket) => {
 		let db = client.db('shoppingListAppDB')

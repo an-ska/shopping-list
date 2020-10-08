@@ -2,11 +2,14 @@
 	padding: 15px;
 	background: #EEE;
 	display: flex;
-	align-items: center;
-	font-size: 12px;
+	flex-direction: column;
 
-	.bought-product__check {
-		color: #5abc27;
-		padding-right: 5px;
+	&__product {
+		font-size: 12px;
+
+		.bought-product__check {
+			color: #5abc27;
+			padding-right: 5px;
+		}
 	}
 }
