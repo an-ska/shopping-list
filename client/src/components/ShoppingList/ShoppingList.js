@@ -1,12 +1,14 @@
 import React from 'react'
-import './ShoppingList.scss'
+import styles from './ShoppingList.module.scss'
 import ReactEmoji from 'react-emoji'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const ShoppingList = ({ products, markProductAsBought, editProduct, editedProduct, saveOnBlur, saveOnKeyDown, deleteProduct }) => (
-	<ul data-cy="shopping-list">
+	<ul className={styles['shopping-list']} data-cy="shopping-list">
 		{ products.map((product, i) => (
-			<li key={i}>
+			<li key={i} className={styles['shopping-list__product']}>
 				<input
+					className={styles['product-check']}
 					type='checkbox'
 					value={product.name}
 					onChange={markProductAsBought}
@@ -15,6 +17,7 @@ const ShoppingList = ({ products, markProductAsBought, editProduct, editedProduc
 				{ editedProduct.id === product.id
 					?
 						<input
+							className={styles['product-edition']}
 							type='text'
 							placeholder={product.name}
 							onBlur={(event) => saveOnBlur(product.id, event)}
@@ -23,8 +26,8 @@ const ShoppingList = ({ products, markProductAsBought, editProduct, editedProduc
 						/>
 					:
 						<>
-							<span onClick={() => editProduct(product)}>{ReactEmoji.emojify(product.name)}</span>
-							<span onClick={() => deleteProduct(product.id)}>x</span>
+							<strong className={styles['product-name']} onClick={() => editProduct(product)}>{ReactEmoji.emojify(product.name)}</strong>
+							<FontAwesomeIcon icon='trash-alt' onClick={() => deleteProduct(product.id)} className={styles['product-removal']}/>
 						</>
 				}
 			</li>

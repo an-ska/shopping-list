@@ -6,6 +6,7 @@ import ShoppingList from '../ShoppingList/ShoppingList'
 import Button from '../Button/Button'
 import Message from '../Message/Message'
 import messages from '../../messages.json'
+import styles from './ShoppingListApp.module.scss'
 
 let socket
 const ShoppingListApp = () => {
@@ -16,6 +17,7 @@ const ShoppingListApp = () => {
 	const [editedProduct, setEditedProduct] = useState({})
 
 	const ENDPOINT = 'https://real-time-shopping-list.herokuapp.com/'
+	// const ENDPOINT = 'localhost:5000'
 
 	useEffect(() => {
 		socket = io(ENDPOINT)
@@ -66,7 +68,6 @@ const ShoppingListApp = () => {
 		socket.on('deletedProduct', id => { setProducts(products => products.filter(product => product.id !== id)) })
 	},[])
 
-
 	const addProduct = event => {
 		event.preventDefault()
 
@@ -111,23 +112,35 @@ const ShoppingListApp = () => {
 	const deleteProduct = id => { socket.emit('deleteProduct', id)}
 
 	return (
-		<>
-			<h1>SHOPPING LIST</h1>
-			{ products.length > 0 && <Button clearList={clearShoppingList} text={messages.clearShoppingList} /> }
-			<Button clearList={clearBoughtProductsList} text={messages.clearBoughtProductsList} />
-			<Message message={message} />
-			<ShoppingList
-				products={products}
-				markProductAsBought={markProductAsBought}
-				editProduct={editProduct}
-				editedProduct={editedProduct}
-				saveOnBlur={saveOnBlur}
-				saveOnKeyDown={saveOnKeyDown}
-				deleteProduct={deleteProduct}
-			/>
-			<Form product={product} setProduct={setProduct} addProduct={addProduct} />
-			<BoughtProductsList boughtProducts={boughtProducts} />
-		</>
+		<section className={styles['shopping-list-app']}>
+			<div className={styles['shopping-list-app__header']}>
+				{
+					(products.length > 0 || boughtProducts.length > 0) &&
+					<div className={styles['clear-buttons-panel']}>
+						{ products.length > 0 &&
+							<Button clearList={clearShoppingList} icon='broom' text={messages.shoppingList} />
+						}
+						{ boughtProducts.length > 0 &&
+							<Button clearList={clearBoughtProductsList} icon='broom' text={messages.boughtProductsList} />
+						}
+					</div>
+				}
+				<Message message={message} />
+				<Form product={product} setProduct={setProduct} addProduct={addProduct} />
+			</div>
+			{ products.length > 0 &&
+				<ShoppingList
+					products={products}
+					markProductAsBought={markProductAsBought}
+					editProduct={editProduct}
+					editedProduct={editedProduct}
+					saveOnBlur={saveOnBlur}
+					saveOnKeyDown={saveOnKeyDown}
+					deleteProduct={deleteProduct}
+				/>
+			}
+			{ boughtProducts.length > 0 && <BoughtProductsList boughtProducts={boughtProducts}/> }
+		</section>
 	)
 }
 
