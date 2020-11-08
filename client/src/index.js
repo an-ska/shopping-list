@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import ShoppingListApp from "./components/ShoppingListApp/ShoppingListApp"
-import { library } from '@fortawesome/fontawesome-svg-core';
+import { library } from '@fortawesome/fontawesome-svg-core'
 import {
 	faTrashAlt,
 	faBroom,

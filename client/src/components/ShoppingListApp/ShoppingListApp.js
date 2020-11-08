@@ -16,7 +16,7 @@ const ShoppingListApp = () => {
 	const [boughtProducts, setBoughtProducts] = useState([])
 	const [editedProduct, setEditedProduct] = useState({})
 
-	const ENDPOINT = 'https://real-time-shopping-list.herokuapp.com/'
+	const ENDPOINT = 'https://real-ti me-shopping-list.herokuapp.com/'
 	// const ENDPOINT = 'localhost:5000'
 
 	useEffect(() => {

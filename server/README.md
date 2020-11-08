@@ -1,6 +1,10 @@
 ## Available scripts
 
-In the project directory, you can run:
+In the `server` directory, you can run:
+
+### `npm install`
+
+Installs all needed dependencies to run the app.
 
 ### `npm start`
 
@@ -16,6 +20,7 @@ to see commands as they execute while also viewing the application under test.
 
 Backend part is deployed on <a href="https://www.heroku.com/">Heroku</a>.<br />
 Backend part deployment steps:
+
 1. `cd server`
 2. `heroku login`
 3. `git add`

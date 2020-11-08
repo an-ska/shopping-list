@@ -26,7 +26,7 @@ mongo.connect(mongoDB, (error, client) => {
 	console.log(messages.dbConnected)
 
 	let usersNumber = 0;
-	const getMessage = usersNumber => (usersNumber > 1 ? `${usersNumber} people are connected!` : `${usersNumber} person connected!`)
+	const getMessage = usersNumber => (usersNumber === 1 ? `${usersNumber} person connected!` : `${usersNumber} people are connected!`)
 
 	io.on('connect', (socket) => {
 		let db = client.db('shoppingListAppDB')
@@ -40,7 +40,6 @@ mongo.connect(mongoDB, (error, client) => {
 				if (error) throw error
 				socket.emit('shoppingList', response)
 			})
-
 		boughtProductsList
 			.find()
 			.sort({_id: 1})
