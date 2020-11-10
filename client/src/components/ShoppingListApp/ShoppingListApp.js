@@ -9,20 +9,19 @@ import messages from '../../messages.json'
 import styles from './ShoppingListApp.module.scss'
 
 let socket
-const ShoppingListApp = () => {
+const ShoppingListApp = ({ match }) => {
 	const [message, setMessage] = useState()
 	const [product, setProduct] = useState('')
-	const [products, setProducts] = useState([])
-	const [boughtProducts, setBoughtProducts] = useState([])
 	const [editedProduct, setEditedProduct] = useState({})
+	const [productList, setProductList] = useState([])
 
-	const ENDPOINT = 'https://real-ti me-shopping-list.herokuapp.com/'
+	const ENDPOINT = 'https://real-time-shopping-list.herokuapp.com/'
 	// const ENDPOINT = 'localhost:5000'
 
 	useEffect(() => {
 		socket = io(ENDPOINT)
-
-		socket.emit('join')
+		const { id } = match.params
+		socket.emit('join', id)
 
 		return () => {
 			socket.emit('disconnect')
@@ -33,31 +32,33 @@ const ShoppingListApp = () => {
 	useEffect(() => {
 		socket.on('message', message => { setMessage(message.text) })
 
-		socket.on('shoppingList', products => { setProducts(products) })
+		socket.on('products', (products) => {
+			setProductList(products)
+		})
 
-		socket.on('boughtProductsList', products => { setBoughtProducts(products) })
+		socket.on('addedProduct', product => { setProductList(products => [...products, product]) })
 
-		socket.on('addedProduct', product => { setProducts(products => [...products, product]) })
+		socket.on('markedProductAsBought', name => {
+			setProductList(products => {
+				const markedProducts = products.filter(product => product.name === name)
+				markedProducts.forEach(product => product.isBought = true)
 
-		socket.on('addedBoughtProduct', product => { setBoughtProducts(products => [...products, product]) })
-
-		socket.on('movedProduct', productName => {
-			setMessage(messages.isBought)
-			setProducts(products => products.filter(product => product.name !== productName))
+				return [...products]
+			})
 		})
 
 		socket.on('clearedShoppingList', () => {
 			setMessage(messages.shoppingListCleared)
-			setProducts([])
+			setProductList(products => products.filter(product => product.isBought === true))
 		})
 
 		socket.on('clearedBoughtProductsList', () => {
 			setMessage(messages.boughtProductsListCleared)
-			setBoughtProducts([])
+			setProductList(products => products.filter(product => product.isBought === false))
 		})
 
 		socket.on('editedProduct', (newName, id) => {
-			setProducts(products => {
+			setProductList(products => {
 				const editedProduct = products.find(product => product.id === id)
 				editedProduct.name = newName
 
@@ -65,7 +66,7 @@ const ShoppingListApp = () => {
 			})
 		})
 
-		socket.on('deletedProduct', id => { setProducts(products => products.filter(product => product.id !== id)) })
+		socket.on('deletedProduct', id => { setProductList(products => products.filter(product => product.id !== id)) })
 	},[])
 
 	const addProduct = event => {
@@ -81,11 +82,11 @@ const ShoppingListApp = () => {
 	const markProductAsBought = event => {
 		const boughtProductName = event.target.value
 
-		const updatedProducts = [...products]
+		const updatedProducts = [...productList]
 		const selectedProducts = updatedProducts.filter(product => product.name === boughtProductName)
 
 		selectedProducts.forEach(selectedProduct => selectedProduct.isChecked = !selectedProduct.isChecked)
-		setProducts(updatedProducts)
+		setProductList(updatedProducts)
 
 		setTimeout(() => { socket.emit('markProductAsBought', boughtProductName) }, 800)
 	}
@@ -93,7 +94,7 @@ const ShoppingListApp = () => {
 	const editProduct = product => { setEditedProduct({...product}) }
 
 	const saveEditedProduct = (id, event) => {
-		const editedProduct = [...products].find(product => product.id === id)
+		const editedProduct = [...productList].find(product => product.id === id)
 
 		const oldName = editedProduct.name
 		const newName = event.target.value
@@ -115,22 +116,22 @@ const ShoppingListApp = () => {
 		<section className={styles['shopping-list-app']}>
 			<div className={styles['shopping-list-app__header']}>
 				{
-					(products.length > 0 || boughtProducts.length > 0) &&
+					(productList.filter(product => product.isBought === true).length > 0 || productList.filter(product => product.isBought === false).length > 0) &&
 					<div className={styles['clear-buttons-panel']}>
-						{ products.length > 0 &&
-							<Button clearList={clearShoppingList} icon='broom' text={messages.shoppingList} />
+						{ productList.filter(product => product.isBought === false).length > 0 &&
+							<Button handleClick={clearShoppingList} icon='broom' text={messages.shoppingList} />
 						}
-						{ boughtProducts.length > 0 &&
-							<Button clearList={clearBoughtProductsList} icon='broom' text={messages.boughtProductsList} />
+						{ productList.filter(product => product.isBought === true).length > 0 &&
+							<Button handleClick={clearBoughtProductsList} icon='broom' text={messages.boughtProductsList} />
 						}
 					</div>
 				}
 				<Message message={message} />
 				<Form product={product} setProduct={setProduct} addProduct={addProduct} />
 			</div>
-			{ products.length > 0 &&
+			{ productList.filter(product => product.isBought === false).length > 0 &&
 				<ShoppingList
-					products={products}
+					products={productList.filter(product => product.isBought === false)}
 					markProductAsBought={markProductAsBought}
 					editProduct={editProduct}
 					editedProduct={editedProduct}
@@ -139,7 +140,10 @@ const ShoppingListApp = () => {
 					deleteProduct={deleteProduct}
 				/>
 			}
-			{ boughtProducts.length > 0 && <BoughtProductsList boughtProducts={boughtProducts}/> }
+			{ productList.filter(product => product.isBought === true).length > 0 && 
+				<BoughtProductsList boughtProducts={productList.filter(product => product.isBought === true)} />
+			}
+
 		</section>
 	)
 }

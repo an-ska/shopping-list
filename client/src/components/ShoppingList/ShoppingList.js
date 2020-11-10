@@ -5,8 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const ShoppingList = ({ products, markProductAsBought, editProduct, editedProduct, saveOnBlur, saveOnKeyDown, deleteProduct }) => (
 	<ul className={styles['shopping-list']} data-cy="shopping-list">
-		{ products.map((product, i) => (
-			<li key={i} className={styles['shopping-list__product']}>
+		{ products.map(product => (
+			<li key={product.id} className={styles['shopping-list__product']}>
 				<input
 					className={styles['product-check']}
 					type='checkbox'

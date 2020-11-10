@@ -1,20 +1,23 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import ShoppingListApp from "./components/ShoppingListApp/ShoppingListApp"
+import { BrowserRouter as Router } from 'react-router-dom'
+import { routes } from './routes.js'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
 	faTrashAlt,
 	faBroom,
 	faPlus,
-	faCheckSquare
-} from '@fortawesome/free-solid-svg-icons';
+	faCheckSquare,
+	faListUl
+} from '@fortawesome/free-solid-svg-icons'
 
 library.add(
 	faTrashAlt,
 	faBroom,
 	faPlus,
-	faCheckSquare
-);
+	faCheckSquare,
+	faListUl
+)
 
-ReactDOM.render(<ShoppingListApp />, document.querySelector('#root'))
-
+ReactDOM.render(
+	<Router>{routes}</Router>, document.querySelector('#root'))
