@@ -3,6 +3,7 @@
   "welcome": "Hey, welcome!",
   "newJoiner": "We have a new joiner!",
   "serverIsRunning": "Server is up and running!",
+  "isBought": "Product is bought!",
   "productDeleted": "Product was deleted!",
   "shoppingListDeleted": "Shopping list was deleted!",
   "boughtProductsListDeleted": "Bought products list was deleted!",
