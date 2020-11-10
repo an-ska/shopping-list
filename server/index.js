@@ -12,7 +12,7 @@ const dotenv = require('dotenv')
 const { v4: uuidv4 } = require('uuid')
 
 // use to run the server with PORT and mongoDB set in env file
-dotenv.config()
+// dotenv.config()
 
 const PORT = process.env.PORT || 5000
 const mongoDB = process.env.MONGODB_URI || testDB
