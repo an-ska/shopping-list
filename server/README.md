@@ -23,6 +23,6 @@ Backend part deployment steps:
 
 1. `cd server`
 2. `heroku login`
-3. `git add`
+3. `git add .`
 4. `git commit -m 'commit message'`
 5. `git push heroku master`
