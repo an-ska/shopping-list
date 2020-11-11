@@ -38,17 +38,8 @@ mongo.connect(mongoDB, (error, client) => {
 
 	io.on('connect', (socket) => {
 		let db = client.db('shoppingListAppDB')
-		// let userCollection = db.collection('1')
 		let userCollection
 		let listId
-
-		// userCollection
-		// .find()
-		// .sort({_id: 1})
-		// .toArray((error, response) => {
-		// 	if (error) throw error
-		// 	socket.emit('products', response)
-		// })
 
 		socket.on('join', (id) => {
 			listId = id
@@ -67,7 +58,7 @@ mongo.connect(mongoDB, (error, client) => {
 
 			socket.join(listId)
 
-			socket.emit('message', { text: messages.welcome});
+			socket.emit('message', { text: messages.welcome})
 			socket.broadcast.to(listId).emit('message', { text: getMessage(usersNumber) })
 		})
 
