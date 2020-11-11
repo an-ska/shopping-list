@@ -31,6 +31,8 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 Frontend part is deployed on <a href="https://www.netlify.com/">Netlify</a>.<br />
 Frontend part deployment steps:
 
+from the root directory:
+
 1. `cd client`
 2. `yarn build`
 3. `netlify login`

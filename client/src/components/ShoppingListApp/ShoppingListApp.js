@@ -15,7 +15,7 @@ const ShoppingListApp = ({ match }) => {
 	const [editedProduct, setEditedProduct] = useState({})
 	const [productList, setProductList] = useState([])
 
-	const ENDPOINT = 'https://real-time-shopping-list.herokuapp.com/'
+	const ENDPOINT = 'https://shopping-list-backend-mp.herokuapp.com/'
 	// const ENDPOINT = 'localhost:5000'
 
 	useEffect(() => {
@@ -143,7 +143,6 @@ const ShoppingListApp = ({ match }) => {
 			{ productList.filter(product => product.isBought === true).length > 0 && 
 				<BoughtProductsList boughtProducts={productList.filter(product => product.isBought === true)} />
 			}
-
 		</section>
 	)
 }
