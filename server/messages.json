@@ -2,7 +2,7 @@
   "dbConnected": "MongoDB connected!",
   "welcome": "Hey, welcome!",
   "newJoiner": "We have a new joiner!",
-  "serverIsRunning": "Backend Server is up and running!",
+  "serverIsRunning": "Server is up and running!",
   "isBought": "Product is bought!",
   "productDeleted": "Product was deleted!",
   "shoppingListDeleted": "Shopping list was deleted!",
