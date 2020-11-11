@@ -8,6 +8,7 @@ list as well as clearing the lists up. All realtime which means lists can be upd
 You can create your own list, share the link to your cobuyers and save it to come back to it later, for the future use, when going to shop again :smile:.
 
 Stack: React, Socket.io, MongoDB, Cypress
+
 Deployed on Heroku & Netlify
 
 ## Frontend
