@@ -30,4 +30,4 @@ from the root directory:
 5. `cd ..`
 6. `git subtree push --prefix server heroku master`
 
-    Please note that I have decided to keep two projects (for frontend and backend) in one repository. Apparently Heroku expects single project in single repository. For example it looks for package.json in the root directory. In my particular case it won't find it as I have two subdirectories each with its own package.json. As I want to deploy to Heroku only backend, I need to push to Heroku only the server subdirectory of this repository. To achieve that command number 6 needs to be executed.
+    Please note that I have decided to keep two projects (for frontend and backend) in one repository. Apparently, Heroku expects single project in single repository. For example it looks for package.json in the root directory. In my particular case it won't find it as I have two subdirectories each with its own package.json. As I want to deploy to Heroku only backend, I need to push to Heroku only the server subdirectory of this repository. To achieve that command number 6 needs to be executed.
