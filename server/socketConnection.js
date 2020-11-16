@@ -1,7 +1,7 @@
 
 const messages = require('./messages.json')
 const { v4: uuidv4 } = require('uuid')
-const { PRODUCTION_DB_NAME, DEVELOPMENT_DB_NAME } = require('../client/src/constants')
+const constants = require('./constants')
 
 module.exports = (io, client) => {
   let usersNumber = 0
@@ -13,7 +13,7 @@ module.exports = (io, client) => {
 	} 
 
 	io.on('connect', socket => {
-		let db = client.db(PRODUCTION_DB_NAME)
+		let db = client.db(constants.PRODUCTION_DB_NAME)
 		let userCollection
 		let listId
 

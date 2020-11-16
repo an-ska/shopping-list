@@ -12,7 +12,7 @@ const initSocketConnection = require('./socketConnection')
 const messages = require('./messages.json')
 
 // use to run the server with PORT & mongoDB consts set in .env file as config reads the .env file so process.env has the keys & values defined in there
-// dotenv.config()
+dotenv.config()
 
 const PORT = process.env.PORT || 5000
 const mongoDB = process.env.MONGODB_URI || testDB
