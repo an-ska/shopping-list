@@ -1,25 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import io from 'socket.io-client'
-import BoughtProductsList from '../BoughtProductsList/BoughtProductsList'
-import Form from '../Form/Form'
-import ShoppingList from '../ShoppingList/ShoppingList'
-import Button from '../Button/Button'
-import Message from '../Message/Message'
+import BoughtProductsList from '../../components/BoughtProductsList/BoughtProductsList'
+import Form from '../../components/Form/Form'
+import ShoppingList from '../../components/ShoppingList/ShoppingList'
+import Button from '../../components/Button/Button'
+import Message from '../../components/Message/Message'
 import messages from '../../messages.json'
 import styles from './ShoppingListApp.module.scss'
+import { ENDPOINT_BACKEND_DEVELOPMENT, ENDPOINT_BACKEND_PRODUCTION } from '../../constants'
 
 let socket
 const ShoppingListApp = ({ match }) => {
-	const [message, setMessage] = useState()
+	const [message, setMessage] = useState('')
 	const [product, setProduct] = useState('')
 	const [editedProduct, setEditedProduct] = useState({})
 	const [productList, setProductList] = useState([])
 
-	const ENDPOINT = 'https://shopping-list-backend-mp.herokuapp.com/'
-	// const ENDPOINT = 'localhost:5000'
-
 	useEffect(() => {
-		socket = io(ENDPOINT)
+		socket = io(ENDPOINT_BACKEND_PRODUCTION)
 		const { id } = match.params
 		socket.emit('join', id)
 
@@ -48,12 +46,10 @@ const ShoppingListApp = ({ match }) => {
 		})
 
 		socket.on('clearedShoppingList', () => {
-			setMessage(messages.shoppingListCleared)
 			setProductList(products => products.filter(product => product.isBought === true))
 		})
 
 		socket.on('clearedBoughtProductsList', () => {
-			setMessage(messages.boughtProductsListCleared)
 			setProductList(products => products.filter(product => product.isBought === false))
 		})
 
@@ -112,26 +108,29 @@ const ShoppingListApp = ({ match }) => {
 
 	const deleteProduct = id => { socket.emit('deleteProduct', id)}
 
+	const shoppingList = productList.filter(product => product.isBought === false)
+	const boughtProductsList = productList.filter(product => product.isBought === true)
+
 	return (
 		<section className={styles['shopping-list-app']}>
 			<div className={styles['shopping-list-app__header']}>
 				{
-					(productList.filter(product => product.isBought === true).length > 0 || productList.filter(product => product.isBought === false).length > 0) &&
-					<div className={styles['clear-buttons-panel']}>
-						{ productList.filter(product => product.isBought === false).length > 0 &&
-							<Button handleClick={clearShoppingList} icon='broom' text={messages.shoppingList} />
+					productList.length > 0 &&
+					<div className={styles['buttons-panel']}>
+						{ shoppingList.length > 0 &&
+							<Button handleClick={clearShoppingList} icon='broom' text={messages.shoppingList} variant='button--half-width' />
 						}
-						{ productList.filter(product => product.isBought === true).length > 0 &&
-							<Button handleClick={clearBoughtProductsList} icon='broom' text={messages.boughtProductsList} />
+						{ boughtProductsList.length > 0 &&
+							<Button handleClick={clearBoughtProductsList} icon='broom' text={messages.boughtProductsList} variant='button--half-width' />
 						}
 					</div>
 				}
 				<Message message={message} />
 				<Form product={product} setProduct={setProduct} addProduct={addProduct} />
 			</div>
-			{ productList.filter(product => product.isBought === false).length > 0 &&
+			{ shoppingList.length > 0 &&
 				<ShoppingList
-					products={productList.filter(product => product.isBought === false)}
+					products={shoppingList}
 					markProductAsBought={markProductAsBought}
 					editProduct={editProduct}
 					editedProduct={editedProduct}
@@ -140,8 +139,8 @@ const ShoppingListApp = ({ match }) => {
 					deleteProduct={deleteProduct}
 				/>
 			}
-			{ productList.filter(product => product.isBought === true).length > 0 && 
-				<BoughtProductsList boughtProducts={productList.filter(product => product.isBought === true)} />
+			{ boughtProductsList.length > 0 && 
+				<BoughtProductsList boughtProducts={boughtProductsList} />
 			}
 		</section>
 	)

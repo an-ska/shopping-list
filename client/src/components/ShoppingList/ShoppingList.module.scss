@@ -1,86 +1,88 @@
+@import "../../styles/variables.scss";
+
 .shopping-list {
-	background: #FFF;
-	margin: 10px;
-	border: 1px solid #EEE;
-	border-radius: 5px;
+  background: #fff;
+  margin: 10px;
+  border: 1px solid #eee;
+  border-radius: 5px;
 
-	&__product {
-		display: flex;
-		align-items: center;
-		padding: 8px 15px;
-		border-bottom: 1px solid #EEE;
+  &__product {
+    display: flex;
+    align-items: center;
+    padding: 8px 15px;
+    border-bottom: 1px solid #eee;
 
-		&:last-child {
-			border: 0;
-		}
+    &:last-child {
+      border: 0;
+    }
 
-		.product-check {
-			position: relative;
-			width: 25px;
-			height: 25px;
-			color: #000;
-			border: 1px solid #ccc;
-			border-radius: 5px;
-			appearance: none;
-			outline: 0;
-			cursor: pointer;
-			transition: background 175ms cubic-bezier(0.1, 0.1, 0.25, 1);
-			margin-right: 10px;
+    .product-check {
+      position: relative;
+      width: 25px;
+      height: 25px;
+      color: #000;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      appearance: none;
+      outline: 0;
+      cursor: pointer;
+      transition: background 175ms cubic-bezier(0.1, 0.1, 0.25, 1);
+      margin-right: 10px;
 
-			&::before {
-				position: absolute;
-				content: '';
-				display: block;
-				left: 9px;
-				top: 4px;
-				width: 5px;
-				height: 10px;
-				border-style: solid;
-				border-color: #FFF;
-				border-width: 0 2px 2px 0;
-				transform: rotate(45deg);
-				opacity: 0;
-			}
+      &::before {
+        position: absolute;
+        content: "";
+        display: block;
+        left: 9px;
+        top: 4px;
+        width: 5px;
+        height: 10px;
+        border-style: solid;
+        border-color: #fff;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+        opacity: 0;
+      }
 
-			&:checked {
-				color: #FFF;
-				border-color: #5abc27;
-				background: #5abc27;
+      &:checked {
+        color: #fff;
+        border-color: $mainColorGreen;
+        background: $mainColorGreen;
 
-				&::before {
-					opacity: 1;
-				}
+        &::before {
+          opacity: 1;
+        }
 
-				~ span::before {
-					clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-				}
-			}
-		}
+        ~ span::before {
+          clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        }
+      }
+    }
 
-		.product-edition {
-			border: none;
-			color: #000;
-			font-size: 16px;
-			outline: 0;
+    .product-edition {
+      border: none;
+      color: #000;
+      font-size: 16px;
+      outline: 0;
 
-			&::placeholder {
-				font-size: 20px;
-			}
-		}
+      &::placeholder {
+        font-size: 20px;
+      }
+    }
 
-		.product-removal {
-			margin-left: auto;
-			color: #1b90f1;
-			cursor: pointer;
-		}
+    .product-removal {
+      margin-left: auto;
+      color: $mainColorBlue;
+      cursor: pointer;
+    }
 
-		.product-name {
-			position: relative;
-			cursor: pointer;
-			font-size: 14px;
-			font-weight: 600;
-			padding-right: 10px;
-			user-select: none;
-		}
-	}
+    .product-name {
+      position: relative;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: 600;
+      padding-right: 10px;
+      user-select: none;
+    }
+  }
 }

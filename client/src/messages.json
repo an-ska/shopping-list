@@ -1,7 +1,7 @@
 {
-  "createList": "Create your list!",
-  "shoppingListCleared": "Shopping list was cleared!",
-  "boughtProductsListCleared": "Bought products list was cleared!",
+  "introTitle": "Shopping List App",
+  "introDescription": "The best way to create your grocery shopping lists. Share it and work on it together with your partner or roommates, all real-time! Changes show instantly on everyone's device. You can add products, edit them, delete and mark as already bought!",
+  "introActionButton": "Create your own list!",
   "shoppingList": "shopping list",
   "boughtProductsList": "bought products"
 }

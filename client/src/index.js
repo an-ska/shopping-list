@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { routes } from './routes.js'
+import './index.scss'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
 	faTrashAlt,
@@ -19,5 +20,4 @@ library.add(
 	faListUl
 )
 
-ReactDOM.render(
-	<Router>{routes}</Router>, document.querySelector('#root'))
+ReactDOM.render(<Router>{routes}</Router>, document.querySelector('#root'))

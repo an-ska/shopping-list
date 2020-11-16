@@ -1,3 +1,5 @@
+@import '../../styles/variables.scss';
+
 .bought-products-list {
 	padding: 15px;
 	background: #EEE;
@@ -5,10 +7,10 @@
 	flex-direction: column;
 
 	&__product {
-		font-size: 12px;
+		font-size: 16px;
 
 		.bought-product__check {
-			color: #5abc27;
+			color: $mainColorGreen;
 			padding-right: 5px;
 		}
 	}

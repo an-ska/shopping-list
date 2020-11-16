@@ -1,7 +1,7 @@
 import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
-import ShoppingListApp from "./components/ShoppingListApp/ShoppingListApp"
-import ShoppingListIntroduction from "./components/ShoppingListIntroduction/ShoppingListIntroduction"
+import ShoppingListApp from "./pages/ShoppingListApp/ShoppingListApp"
+import ShoppingListIntroduction from "./pages/ShoppingListIntroduction/ShoppingListIntroduction"
 
 export const routes = (
   <Switch>

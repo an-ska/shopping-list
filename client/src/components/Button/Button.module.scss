@@ -1,16 +1,27 @@
-.clear-button {
-	background: #5abc27;
-	border: 0;
-	border-radius: 5px;
-	color: #FFF;
-	padding: 10px;
-	width: 50%;
-	text-align: center;
-	font-size: 14px;
-	margin: 5px;
-	cursor: pointer;
+@import '../../styles/variables.scss';
 
-	&__icon {
-		padding-right: 5px;
-	}
+.button {
+  background: $mainColorGreen;
+  border: 0;
+  border-radius: 5px;
+  color: #fff;
+  padding: 10px 8px;
+  text-align: center;
+  cursor: pointer;
+
+  &__icon {
+    padding-right: 5px;
+  }
+
+  &--half-width {
+    width: 50%;
+    font-size: 14px;
+    margin: 5px;
+  }
+
+  &--full-width {
+    width: 100%;
+    font-size: 24px;
+    margin: 0;
+  }
 }

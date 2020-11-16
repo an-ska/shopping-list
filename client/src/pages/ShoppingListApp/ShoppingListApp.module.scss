@@ -1,0 +1,18 @@
+@import "../../styles/variables.scss";
+
+.shopping-list-app {
+  max-width: 360px;
+  margin: 0 auto;
+  border: 1px solid #eee;
+  border-radius: 5px;
+  background: #fff;
+
+  &__header {
+    background: $mainColorBlue;
+  }
+
+  .buttons-panel {
+    display: flex;
+    padding: 10px 10px 0;
+  }
+}

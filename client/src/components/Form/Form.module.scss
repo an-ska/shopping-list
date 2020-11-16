@@ -1,3 +1,5 @@
+@import '../../styles/variables.scss';
+
 .form {
 	display: flex;
 	padding: 15px;
@@ -18,9 +20,9 @@
 
 	&__button {
 		cursor: pointer;
-		background: #5abc27;
+		background: $mainColorGreen;
 		border-radius: 0 5px 5px 0;
-		border: 1px solid #5abc27;
+		border: 1px solid $mainColorGreen;
 		border-left: none;
 		padding: 0 15px;
 		color: #FFF;
