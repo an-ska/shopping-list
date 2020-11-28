@@ -33,10 +33,10 @@ const ShoppingListApp = ({ match }) => {
 
 		socket.on('addedProduct', product => { setProductList(products => [...products, product]) })
 
-		socket.on('markedProductAsBought', name => {
+		socket.on('toggledProduct', name => {
 			setProductList(products => {
-				const markedProducts = products.filter(product => product.name === name)
-				markedProducts.forEach(product => product.isBought = true)
+				const toggledProducts = products.filter(product => product.name === name)
+				toggledProducts.forEach(product => product.isBought = !product.isBought)
 
 				return [...products]
 			})
@@ -72,16 +72,17 @@ const ShoppingListApp = ({ match }) => {
 
 	const clearBoughtProductsList = () => { socket.emit('clearBoughtProductsList') }
 
-	const markProductAsBought = event => {
-		const boughtProductName = event.target.value
+	const toggleProduct = event => {
+		const productName = event.target.value
 
 		const updatedProducts = [...productList]
-		const selectedProducts = updatedProducts.filter(product => product.name === boughtProductName)
+		const toggledProducts = updatedProducts.filter(product => product.name === productName)
 
-		selectedProducts.forEach(selectedProduct => selectedProduct.isChecked = !selectedProduct.isChecked)
+		toggledProducts.forEach(toggledProduct => toggledProduct.isChecked = !toggledProduct.isChecked)
+
 		setProductList(updatedProducts)
 
-		setTimeout(() => { socket.emit('markProductAsBought', boughtProductName) }, 800)
+		setTimeout(() => { socket.emit('toggleProduct', productName, !toggledProducts[0].isBought, toggledProducts[0].isChecked) }, 800)
 	}
 
 	const editProduct = product => { setEditedProduct({...product}) }
@@ -128,7 +129,7 @@ const ShoppingListApp = ({ match }) => {
 			{ shoppingList.length > 0 &&
 				<ShoppingList
 					products={shoppingList}
-					markProductAsBought={markProductAsBought}
+					toggleProduct={toggleProduct}
 					editProduct={editProduct}
 					editedProduct={editedProduct}
 					saveOnBlur={saveOnBlur}
@@ -137,7 +138,7 @@ const ShoppingListApp = ({ match }) => {
 				/>
 			}
 			{ boughtProductsList.length > 0 && 
-				<BoughtProductsList boughtProducts={boughtProductsList} />
+				<BoughtProductsList boughtProducts={boughtProductsList} toggleProduct={toggleProduct} />
 			}
 		</section>
 	)

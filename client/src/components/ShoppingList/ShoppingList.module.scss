@@ -16,49 +16,6 @@
       border: 0;
     }
 
-    .product-check {
-      position: relative;
-      width: 25px;
-      height: 25px;
-      color: #000;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      appearance: none;
-      outline: 0;
-      cursor: pointer;
-      transition: background 175ms cubic-bezier(0.1, 0.1, 0.25, 1);
-      margin-right: 10px;
-
-      &::before {
-        position: absolute;
-        content: "";
-        display: block;
-        left: 9px;
-        top: 4px;
-        width: 5px;
-        height: 10px;
-        border-style: solid;
-        border-color: #fff;
-        border-width: 0 2px 2px 0;
-        transform: rotate(45deg);
-        opacity: 0;
-      }
-
-      &:checked {
-        color: #fff;
-        border-color: $mainColorGreen;
-        background: $mainColorGreen;
-
-        &::before {
-          opacity: 1;
-        }
-
-        ~ span::before {
-          clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-        }
-      }
-    }
-
     .product-edition {
       border: none;
       color: #000;
@@ -83,6 +40,7 @@
       font-weight: 600;
       padding-right: 10px;
       user-select: none;
+      width: 100%;
     }
   }
 }

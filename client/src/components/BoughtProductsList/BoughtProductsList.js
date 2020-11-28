@@ -3,11 +3,17 @@ import ReactEmoji from "react-emoji"
 import styles from './BoughtProductsList.module.scss'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
-const BoughtProductsList = ({ boughtProducts }) => (
+const BoughtProductsList = ({ boughtProducts, toggleProduct }) => (
 	<ul className={styles['bought-products-list']}>
 		{ boughtProducts.map((product, i) => (
 			<li key={i} className={styles['bought-products-list__product']}>
-				<FontAwesomeIcon icon='check-square' className={styles['bought-product__check']} />
+				<input
+					className='product-check product-check--small'
+					type='checkbox'
+					value={product.name}
+					onChange={toggleProduct}
+					checked={product.isChecked}
+				/>
 				{ReactEmoji.emojify(product.name)}
 			</li>
 		)) }

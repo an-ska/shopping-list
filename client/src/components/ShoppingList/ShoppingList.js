@@ -3,15 +3,15 @@ import styles from './ShoppingList.module.scss'
 import ReactEmoji from 'react-emoji'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-const ShoppingList = ({ products, markProductAsBought, editProduct, editedProduct, saveOnBlur, saveOnKeyDown, deleteProduct }) => (
+const ShoppingList = ({ products, toggleProduct, editProduct, editedProduct, saveOnBlur, saveOnKeyDown, deleteProduct }) => (
 	<ul className={styles['shopping-list']} data-cy="shopping-list">
 		{ products.map(product => (
 			<li key={product.id} className={styles['shopping-list__product']}>
 				<input
-					className={styles['product-check']}
+					className='product-check'
 					type='checkbox'
 					value={product.name}
-					onChange={markProductAsBought}
+					onChange={toggleProduct}
 					checked={product.isChecked}
 				/>
 				{ editedProduct.id === product.id
@@ -19,9 +19,9 @@ const ShoppingList = ({ products, markProductAsBought, editProduct, editedProduc
 						<input
 							className={styles['product-edition']}
 							type='text'
-							placeholder={product.name}
-							onBlur={(event) => saveOnBlur(product.id, event)}
-							onKeyDown={(event) => saveOnKeyDown(product.id, event)}
+							defaultValue={product.name}
+							onBlur={event => saveOnBlur(product.id, event)}
+							onKeyDown={event => saveOnKeyDown(product.id, event)}
 							autoFocus
 						/>
 					:
