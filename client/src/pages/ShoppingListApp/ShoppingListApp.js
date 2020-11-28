@@ -21,11 +21,8 @@ const ShoppingListApp = ({ match }) => {
 		const { id } = match.params
 		socket.emit('join', id)
 
-		return () => {
-			socket.emit('disconnect')
-			socket.off()
-		}
-	}, [])
+		return () => { socket.disconnect(); }
+	}, [match.params])
 
 	useEffect(() => {
 		socket.on('message', message => { setMessage(message.text) })
