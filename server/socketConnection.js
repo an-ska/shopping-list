@@ -14,7 +14,7 @@ module.exports = (io, client) => {
 
 	io.on('connect', socket => {
 		let db = client.db(constants.PRODUCTION_DB_NAME)
-		let userCollection
+		let userCollection = ''
 		let listId
 
 		socket.on('join', id => {
@@ -49,15 +49,16 @@ module.exports = (io, client) => {
 			callback()
 		})
 
-		socket.on('markProductAsBought', name => {
+		socket.on('toggleProduct', (name, isBought, isChecked) => {
+			console.log(name, isBought, isChecked )
 			userCollection.updateMany(
 				{name},
-				{$set: {isBought: true}},
-				(error, isProductBought) => {
+				{$set: { isBought, isChecked }},
+				(error, isProduct) => {
 					if (error) throw error
-					if (isProductBought) {
-						io.to(listId).emit('markedProductAsBought', name)
-						socket.emit('message', { text: messages.isBought })
+					if (isProduct) {
+						io.to(listId).emit('toggledProduct', name)
+						socket.emit('message', { text: messages.isUnbought })
 					}
 				}
 			)

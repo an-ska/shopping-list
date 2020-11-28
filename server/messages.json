@@ -5,6 +5,7 @@
   "serverIsRunning": "Server is up and running!",
   "isAdded": "Product is added!",
   "isBought": "Product is bought!",
+  "isUnbought": "Product moved to shopping list!",
   "isDeleted": "Product is deleted!",
   "shoppingListDeleted": "Shopping list is deleted!",
   "boughtProductsListDeleted": "Bought products list is deleted!",
