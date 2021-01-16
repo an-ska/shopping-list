@@ -1,6 +1,8 @@
-import React from 'react'
-import styles from './Message.module.scss'
+import React from 'react';
+import styles from './Message.module.scss';
 
-const Message = ({  message }) => <h1 className={styles['message']}>{message}</h1>
+const Message = ({ message }) => (
+  <h1 className={styles['message']}>{message}</h1>
+);
 
-export default Message
+export default Message;
