@@ -1,0 +1,30 @@
+{
+  "env": {
+    "es2020": true
+  },
+  "extends": [
+    "react-app",
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:prettier/recommended",
+    "prettier/react"
+  ],
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaFeatures": { "jsx": true }
+  },
+  "rules": {
+    "eqeqeq": ["error", "always"],
+    "no-magic-numbers": "error",
+    "no-multi-spaces": "error",
+    "no-useless-return": "error",
+    "comma-spacing": "error", 
+    "no-trailing-spaces": "error",
+    "semi-spacing": "error",
+    "no-duplicate-imports": ["error", { "includeExports": true }],
+    "prefer-const": "error",
+    "prefer-destructuring": "error",
+    "keyword-spacing": "error",
+    "no-var": "error"
+  }
+}
