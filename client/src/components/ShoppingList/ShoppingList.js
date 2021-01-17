@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './ShoppingList.module.scss';
 import ReactEmoji from 'react-emoji';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const ShoppingList = ({
   products,
@@ -20,7 +20,6 @@ const ShoppingList = ({
           type='checkbox'
           value={product.name}
           onChange={toggleProduct}
-          checked={product.isChecked}
         />
         {editedProduct.id === product.id ? (
           <input

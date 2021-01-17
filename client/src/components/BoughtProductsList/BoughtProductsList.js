@@ -7,14 +7,16 @@ const BoughtProductsList = ({ boughtProducts, toggleProduct }) => (
   <ul className={styles['bought-products-list']}>
     {boughtProducts.map((product, i) => (
       <li key={i} className={styles['bought-products-list__product']}>
-        <input
-          className='product-check product-check--small'
-          type='checkbox'
-          value={product.name}
-          onChange={toggleProduct}
-          checked={product.isChecked}
-        />
-        {ReactEmoji.emojify(product.name)}
+        <label>
+          <input
+            className='product-check product-check--small'
+            type='checkbox'
+            value={product.name}
+            onChange={toggleProduct}
+            checked
+          />
+          {ReactEmoji.emojify(product.name)}
+        </label>
       </li>
     ))}
   </ul>

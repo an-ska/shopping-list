@@ -10,6 +10,7 @@ import styles from './ShoppingListApp.module.scss';
 import {
   ENDPOINT_BACKEND_DEVELOPMENT,
   ENDPOINT_BACKEND_PRODUCTION,
+  CHECKED_PRODUCT_ON_SHOPPPING_LIST_TIME,
 } from '../../constants';
 
 let socket;
@@ -42,14 +43,11 @@ const ShoppingListApp = ({ match }) => {
       setProductList(products => [...products, product]);
     });
 
-    socket.on('toggledProduct', name => {
+    socket.on('toggledProduct', (name, isBought) => {
       setProductList(products => {
-        const toggledProducts = products.filter(
-          product => product.name === name
-        );
-        toggledProducts.forEach(
-          product => (product.isBought = !product.isBought)
-        );
+        products
+          .filter(product => product.name === name)
+          .forEach(product => (product.isBought = isBought));
 
         return [...products];
       });
@@ -57,13 +55,13 @@ const ShoppingListApp = ({ match }) => {
 
     socket.on('clearedShoppingList', () => {
       setProductList(products =>
-        products.filter(product => product.isBought === true)
+        products.filter(({ isBought }) => isBought === true)
       );
     });
 
     socket.on('clearedBoughtProductsList', () => {
       setProductList(products =>
-        products.filter(product => product.isBought === false)
+        products.filter(({ isBought }) => isBought === false)
       );
     });
 
@@ -100,25 +98,13 @@ const ShoppingListApp = ({ match }) => {
   const toggleProduct = event => {
     const productName = event.target.value;
 
-    const updatedProducts = [...productList];
-    const toggledProducts = updatedProducts.filter(
-      product => product.name === productName
+    const toggledProducts = [...productList].filter(
+      ({ name }) => name === productName
     );
-
-    toggledProducts.forEach(
-      toggledProduct => (toggledProduct.isChecked = !toggledProduct.isChecked)
-    );
-
-    setProductList(updatedProducts);
 
     setTimeout(() => {
-      socket.emit(
-        'toggleProduct',
-        productName,
-        !toggledProducts[0].isBought,
-        toggledProducts[0].isChecked
-      );
-    }, 800);
+      socket.emit('toggleProduct', productName, !toggledProducts[0].isBought);
+    }, CHECKED_PRODUCT_ON_SHOPPPING_LIST_TIME);
   };
 
   const editProduct = product => {
@@ -152,11 +138,10 @@ const ShoppingListApp = ({ match }) => {
     socket.emit('deleteProduct', id);
   };
 
-  const shoppingList = productList.filter(
-    product => product.isBought === false
-  );
+  const shoppingList = productList.filter(({ isBought }) => isBought === false);
+
   const boughtProductsList = productList.filter(
-    product => product.isBought === true
+    ({ isBought }) => isBought === true
   );
 
   return (
