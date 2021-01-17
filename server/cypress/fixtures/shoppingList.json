@@ -2,19 +2,16 @@
   {
     "_id":"5f7b324a35595b00046e36d8",
     "name":"bananas",
-    "isChecked":false,
     "id":0.45835163361543607
   },
   {
     "_id":"5f7b5c0b0307f30004500987",
     "name":"chicken",
-    "isChecked":false,
     "id":0.17115884687391114
   },
   {
     "_id":"5f7b74040307f30004500989",
     "name":"orange juice",
-    "isChecked":false,
     "id":0.39831083920457466
   }
 ]

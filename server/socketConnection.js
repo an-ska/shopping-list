@@ -6,8 +6,8 @@ const constants = require('./constants')
 module.exports = (io, client) => {
   let usersNumber = 0
 	const getMessage = usersNumber => {
-		if (usersNumber > 1) { return `${usersNumber} people are connected!` }
-		if (usersNumber === 1) { return `${usersNumber} person connected!` }
+		if (usersNumber > 1) return `${usersNumber} people are connected!`
+		if (usersNumber === 1) return `${usersNumber} person connected!`
 
 		return
 	} 
@@ -40,7 +40,7 @@ module.exports = (io, client) => {
 
 		socket.on('addProduct', (name, callback) => {
 			const id = uuidv4()
-			const product = { name, isBought: false, isChecked: false, id }
+			const product = { name, isBought: false, id }
 			userCollection.insertOne(product, () => {
 				io.to(listId).emit('addedProduct', product)
 				socket.emit('message', { text: messages.isAdded })
@@ -49,15 +49,14 @@ module.exports = (io, client) => {
 			callback()
 		})
 
-		socket.on('toggleProduct', (name, isBought, isChecked) => {
-			console.log(name, isBought, isChecked )
+		socket.on('toggleProduct', (name, isBought) => {
 			userCollection.updateMany(
 				{name},
-				{$set: { isBought, isChecked }},
+				{$set: { isBought }},
 				(error, isProduct) => {
 					if (error) throw error
 					if (isProduct) {
-						io.to(listId).emit('toggledProduct', name)
+						io.to(listId).emit('toggledProduct', name, isBought)
 						socket.emit('message', { text: messages.isUnbought })
 					}
 				}
