@@ -8,6 +8,7 @@
   padding: 10px 8px;
   text-align: center;
   cursor: pointer;
+  outline: 0;
 
   &__icon {
     padding-right: 5px;
@@ -23,5 +24,12 @@
     width: 100%;
     font-size: 24px;
     margin: 0;
+  }
+
+  &--form-add {
+		border-radius: 0 5px 5px 0;
+		border: 1px solid $mainColorGreen;
+		border-left: none;
+		padding: 0 15px;
   }
 }

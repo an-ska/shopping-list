@@ -1,6 +1,6 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './Form.module.scss';
+import Button from '../Button/Button';
 
 const Form = ({ setProduct, addProduct, product }) => (
   <form className={styles['form']}>
@@ -14,13 +14,11 @@ const Form = ({ setProduct, addProduct, product }) => (
       autoFocus
       data-cy='add-product-input'
     />
-    <button
-      className={styles['form__button']}
-      onClick={event => addProduct(event)}
-      data-cy='add-button'
-    >
-      <FontAwesomeIcon icon='plus' />
-    </button>
+    <Button
+      handleClick={event => addProduct(event)}
+      icon='plus'
+      variant='button--form-add'
+    />
   </form>
 );
 

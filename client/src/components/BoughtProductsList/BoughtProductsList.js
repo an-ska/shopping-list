@@ -1,20 +1,19 @@
 import React from 'react';
 import ReactEmoji from 'react-emoji';
 import styles from './BoughtProductsList.module.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Checkbox from '../Checkbox/Checkbox';
 
 const BoughtProductsList = ({ boughtProducts, toggleProduct }) => (
   <ul className={styles['bought-products-list']}>
     {boughtProducts.map((product, i) => (
       <li key={i} className={styles['bought-products-list__product']}>
         <label>
-          <input
-            className='product-check product-check--small'
-            type='checkbox'
+          <Checkbox
+            variant='checkbox--small'
             value={product.name}
-            onChange={toggleProduct}
-            checked
-          />
+            handleChange={toggleProduct}
+            isChecked={true}
+          ></Checkbox>
           {ReactEmoji.emojify(product.name)}
         </label>
       </li>

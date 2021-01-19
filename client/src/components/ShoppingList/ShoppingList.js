@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './ShoppingList.module.scss';
 import ReactEmoji from 'react-emoji';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Checkbox from '../Checkbox/Checkbox';
 
 const ShoppingList = ({
   products,
@@ -15,12 +16,7 @@ const ShoppingList = ({
   <ul className={styles['shopping-list']} data-cy='shopping-list'>
     {products.map(product => (
       <li key={product.id} className={styles['shopping-list__product']}>
-        <input
-          className='product-check'
-          type='checkbox'
-          value={product.name}
-          onChange={toggleProduct}
-        />
+        <Checkbox value={product.name} handleChange={toggleProduct}></Checkbox>
         {editedProduct.id === product.id ? (
           <input
             className={styles['product-edition']}
