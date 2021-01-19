@@ -26,9 +26,18 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
+### `yarn lint`
+
+Outputs all ESlint errors in the `src` directory.
+
+### `yarn format`
+
+Formats all files according to Prettier rules in the `client` directory but `node_modules`.
+
+
 ## Deployments
 
-Frontend part is deployed on <a href="https://www.netlify.com/">Netlify</a>.<br />
+Frontend part is deployed on [Netlify](https://www.netlify.com/").<br />
 Frontend part deployment steps:
 
 from the root directory:
