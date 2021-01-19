@@ -18,7 +18,7 @@
     "no-magic-numbers": "error",
     "no-multi-spaces": "error",
     "no-useless-return": "error",
-    "comma-spacing": "error", 
+    "comma-spacing": "error",
     "no-trailing-spaces": "error",
     "semi-spacing": "error",
     "no-duplicate-imports": ["error", { "includeExports": true }],

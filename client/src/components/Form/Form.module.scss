@@ -1,20 +1,20 @@
 @import '../../styles/variables.scss';
 
 .form {
-	display: flex;
-	padding: 15px;
+  display: flex;
+  padding: 15px;
 
-	&__input {
-		border: 1px solid #FFF;
-		padding: 10px;
-		color: #000;
-		border-radius: 5px 0 0 5px;
-		font-size: 16px;
-		outline: 0;
-		width: 100%;
+  &__input {
+    border: 1px solid #fff;
+    padding: 10px;
+    color: #000;
+    border-radius: 5px 0 0 5px;
+    font-size: 16px;
+    outline: 0;
+    width: 100%;
 
-		&::placeholder {
-			font-size: 16px;
-		}
-	}
+    &::placeholder {
+      font-size: 16px;
+    }
+  }
 }
