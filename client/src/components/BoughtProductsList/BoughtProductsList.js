@@ -2,6 +2,7 @@ import React from 'react';
 import ReactEmoji from 'react-emoji';
 import styles from './BoughtProductsList.module.scss';
 import Checkbox from '../Checkbox/Checkbox';
+import PropTypes from 'prop-types';
 
 const BoughtProductsList = ({ boughtProducts, toggleProduct }) => (
   <ul className={styles['bought-products-list']}>
@@ -22,3 +23,8 @@ const BoughtProductsList = ({ boughtProducts, toggleProduct }) => (
 );
 
 export default BoughtProductsList;
+
+BoughtProductsList.propTypes = {
+  boughtProducts: PropTypes.arrayOf(PropTypes.object),
+  toggleProduct: PropTypes.func.isRequired,
+};

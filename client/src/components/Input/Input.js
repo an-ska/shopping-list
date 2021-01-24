@@ -27,8 +27,8 @@ export default Input;
 Input.propTypes = {
   name: PropTypes.string.isRequired,
   placeholder: PropTypes.string,
-  value: PropTypes.any.isRequired,
-  handleChange: PropTypes.func,
+  value: PropTypes.string.isRequired,
+  handleChange: PropTypes.func.isRequired,
   handleBlur: PropTypes.func,
-  handleKeyDown: PropTypes.func,
+  handleKeyDown: PropTypes.func.isRequired,
 };

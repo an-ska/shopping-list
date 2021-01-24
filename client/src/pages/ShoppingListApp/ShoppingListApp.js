@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 import BoughtProductsList from '../../components/BoughtProductsList/BoughtProductsList';
@@ -7,6 +8,7 @@ import Button from '../../components/Button/Button';
 import Message from '../../components/Message/Message';
 import messages from '../../messages.json';
 import styles from './ShoppingListApp.module.scss';
+import PropTypes from 'prop-types';
 import {
   ENDPOINT_BACKEND_DEVELOPMENT,
   ENDPOINT_BACKEND_PRODUCTION,
@@ -16,7 +18,7 @@ import {
 let socket;
 const ShoppingListApp = ({ match }) => {
   const [message, setMessage] = useState('');
-  const [product, setProduct] = useState('');
+  const [productName, setProductName] = useState('');
   const [editedProduct, setEditedProduct] = useState({});
   const [productList, setProductList] = useState([]);
 
@@ -79,8 +81,8 @@ const ShoppingListApp = ({ match }) => {
   const addProduct = event => {
     event.preventDefault();
 
-    if (product) {
-      socket.emit('addProduct', product, () => setProduct(''));
+    if (productName) {
+      socket.emit('addProduct', productName, () => setProductName(''));
     }
   };
 
@@ -155,8 +157,8 @@ const ShoppingListApp = ({ match }) => {
         )}
         <Message message={message} />
         <Form
-          product={product}
-          setProduct={setProduct}
+          productName={productName}
+          setProduct={setProductName}
           addProduct={addProduct}
         />
       </div>
@@ -182,3 +184,11 @@ const ShoppingListApp = ({ match }) => {
 };
 
 export default ShoppingListApp;
+
+ShoppingListApp.prototype = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+    }),
+  }),
+};

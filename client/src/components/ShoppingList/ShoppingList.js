@@ -4,6 +4,7 @@ import ReactEmoji from 'react-emoji';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Checkbox from '../Checkbox/Checkbox';
 import Input from '../Input/Input';
+import PropTypes from 'prop-types';
 
 const ShoppingList = ({
   products,
@@ -12,7 +13,7 @@ const ShoppingList = ({
   editProduct,
   editedProduct,
   updateEditedProduct,
-  deleteProduct
+  deleteProduct,
 }) => (
   <ul className={styles['shopping-list']}>
     {products.map(product => (
@@ -52,3 +53,13 @@ const ShoppingList = ({
 );
 
 export default ShoppingList;
+
+ShoppingList.propTypes = {
+  products: PropTypes.arrayOf(PropTypes.object).isRequired,
+  toggleProduct: PropTypes.func.isRequired,
+  enableProductEdition: PropTypes.func.isRequired,
+  editProduct: PropTypes.func.isRequired,
+  editedProduct: PropTypes.object.isRequired,
+  updateEditedProduct: PropTypes.func.isRequired,
+  deleteProduct: PropTypes.func.isRequired,
+};
