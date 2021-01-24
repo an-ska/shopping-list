@@ -1,0 +1,24 @@
+.input-product {
+  outline: 0;
+  color: #000;
+  font-size: 16px;
+
+  &--edition {
+    border: none;
+
+    &::placeholder {
+      font-size: 20px;
+    }
+  }
+
+  &--addition {
+    border: 1px solid #fff;
+    padding: 10px;
+    border-radius: 5px 0 0 5px;
+    width: 100%;
+
+    &::placeholder {
+      font-size: 16px;
+    }
+  }
+}

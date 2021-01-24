@@ -16,17 +16,6 @@
       border: 0;
     }
 
-    .product-edition {
-      border: none;
-      color: #000;
-      font-size: 16px;
-      outline: 0;
-
-      &::placeholder {
-        font-size: 20px;
-      }
-    }
-
     .product-removal {
       margin-left: auto;
       color: $mainColorBlue;

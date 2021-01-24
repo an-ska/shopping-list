@@ -44,13 +44,11 @@ const ShoppingListApp = ({ match }) => {
     });
 
     socket.on('toggledProduct', (name, isBought) => {
-      setProductList(products => {
-        products
-          .filter(product => product.name === name)
-          .forEach(product => (product.isBought = isBought));
-
-        return [...products];
-      });
+      setProductList(products =>
+        products.map(product =>
+          product.name === name ? { ...product, isBought } : product
+        )
+      );
     });
 
     socket.on('clearedShoppingList', () => {
@@ -65,13 +63,12 @@ const ShoppingListApp = ({ match }) => {
       );
     });
 
-    socket.on('editedProduct', (newName, id) => {
-      setProductList(products => {
-        const editedProduct = products.find(product => product.id === id);
-        editedProduct.name = newName;
-
-        return [...products];
-      });
+    socket.on('editedProduct', (name, id) => {
+      setProductList(products =>
+        products.map(product =>
+          product.id === id ? { ...product, name } : product
+        )
+      );
     });
 
     socket.on('deletedProduct', id => {
@@ -95,43 +92,32 @@ const ShoppingListApp = ({ match }) => {
     socket.emit('clearBoughtProductsList');
   };
 
-  const toggleProduct = event => {
-    const productName = event.target.value;
-
+  const toggleProduct = name => {
     const toggledProducts = [...productList].filter(
-      ({ name }) => name === productName
+      product => product.name === name
     );
 
     setTimeout(() => {
-      socket.emit('toggleProduct', productName, !toggledProducts[0].isBought);
+      socket.emit('toggleProduct', name, !toggledProducts[0].isBought);
     }, CHECKED_PRODUCT_ON_SHOPPPING_LIST_TIME);
   };
 
-  const editProduct = product => {
+  const enableProductEdition = product => {
     setEditedProduct({ ...product });
   };
 
-  const saveEditedProduct = (id, event) => {
-    const editedProduct = [...productList].find(product => product.id === id);
+  const editProduct = name => {
+    setEditedProduct(product => ({ ...product, name }));
+  };
 
-    const oldName = editedProduct.name;
-    const newName = event.target.value;
+  const updateEditedProduct = oldName => {
+    const { name: newName, id } = editedProduct;
 
     if (newName) {
       socket.emit('updateProduct', oldName, newName, id);
     }
 
     setEditedProduct({});
-  };
-
-  const saveOnBlur = (editedProductId, event) => {
-    saveEditedProduct(editedProductId, event);
-  };
-
-  const saveOnKeyDown = (editedProductId, event) => {
-    if (event.key === 'Enter') {
-      saveEditedProduct(editedProductId, event);
-    }
   };
 
   const deleteProduct = id => {
@@ -178,10 +164,10 @@ const ShoppingListApp = ({ match }) => {
         <ShoppingList
           products={shoppingList}
           toggleProduct={toggleProduct}
-          editProduct={editProduct}
+          enableProductEdition={enableProductEdition}
           editedProduct={editedProduct}
-          saveOnBlur={saveOnBlur}
-          saveOnKeyDown={saveOnKeyDown}
+          editProduct={editProduct}
+          updateEditedProduct={updateEditedProduct}
           deleteProduct={deleteProduct}
         />
       )}

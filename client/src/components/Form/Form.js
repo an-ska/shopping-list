@@ -1,19 +1,17 @@
 import React from 'react';
 import styles from './Form.module.scss';
 import Button from '../Button/Button';
+import Input from '../Input/Input';
 
 const Form = ({ setProduct, addProduct, product }) => (
   <form className={styles['form']}>
-    <input
-      className={styles['form__input']}
-      type='text'
+    <Input
+      name='input-product--addition'
       placeholder='Add...'
       value={product}
-      onChange={({ target: { value } }) => setProduct(value)}
-      onKeyDown={event => event.key === 'Enter' && addProduct(event)}
-      autoFocus
-      data-cy='add-product-input'
-    />
+      handleChange={({ target: { value } }) => setProduct(value)}
+      handleKeyDown={event => event.key === 'Enter' && addProduct(event)}
+    ></Input>
     <Button
       handleClick={event => addProduct(event)}
       icon='plus'

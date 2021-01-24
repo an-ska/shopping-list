@@ -5,16 +5,16 @@ import Checkbox from '../Checkbox/Checkbox';
 
 const BoughtProductsList = ({ boughtProducts, toggleProduct }) => (
   <ul className={styles['bought-products-list']}>
-    {boughtProducts.map((product, i) => (
-      <li key={i} className={styles['bought-products-list__product']}>
+    {boughtProducts.map(({ id, name }) => (
+      <li key={id} className={styles['bought-products-list__product']}>
         <label>
           <Checkbox
             variant='checkbox--small'
-            value={product.name}
-            handleChange={toggleProduct}
+            value={name}
+            handleChange={({ target: { value } }) => toggleProduct(value)}
             isChecked={true}
           ></Checkbox>
-          {ReactEmoji.emojify(product.name)}
+          {ReactEmoji.emojify(name)}
         </label>
       </li>
     ))}
